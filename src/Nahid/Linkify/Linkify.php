@@ -176,7 +176,13 @@ class Linkify implements LinkifyInterface
                 }
             }
 
-            return '<a href="' . $match[0] . '"' . $options['attr'] . '>' . $caption . '</a>';
+            if (preg_match('/\.(jpg|png|jpeg|gif)$/',$match[0])) {
+                return '<a href="'.$match[0].'" target="_blank"><img src="' . $match[0] . '"></a>';
+            } else if (preg_match('/\.(pdf)$/',$match[0])) {
+                return '<a href="'.$match[0].'" target="_blank"><img class="pdf" src="/img/pdf.png"></a>';
+            } else {
+                return '<a href="' . $match[0] . '"' . $options['attr'] . '>' . $caption . '</a>';
+            }
         };
 
         return preg_replace_callback($pattern, $callback, $text);
